@@ -7,9 +7,11 @@ import rateLimiter from "express-rate-limit"
 import cookieParser from "cookie-parser"
 import router from "./routes/routes"
 import path from "path"
+import authMiddleware from "./middlewares/auth"
 // Load environment variables from .env file
 
 const app = express()
+
 dotenv.config()
 const corsOptions = {
   origin: true,
@@ -28,16 +30,14 @@ app.use(
     max: 60,
   })
 )
-// Db Connect
-// Serve static files
-app.use("/images", express.static(path.join(__dirname, "../../public/images")))
-app.use("/videos", express.static(path.join(__dirname, "../../public/videos")))
 
 // Routes
+app.get("/", authMiddleware, (req: Request, res: Response) => {
+  res.send("welcome")
+})
 app.use("/api/v1", router)
 const PORT = process.env.PORT || 3000
 // Run app
-
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`)
 })

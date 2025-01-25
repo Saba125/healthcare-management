@@ -1,59 +1,60 @@
 import express from "express"
 import usersController from "../controllers/auth/export"
 import authMiddleware from "../middlewares/auth"
-import categoryController from "../controllers/categories/export"
 import roleMiddleware from "../middlewares/permission"
-import postController from "../controllers/posts/export"
 import { Roles } from "@prisma/client"
-import threadsController from "../controllers/threads/export"
-import commentController from "../controllers/comments/export"
+import patientsController from "../controllers/patients/export"
+import doctorsController from "../controllers/doctors/export"
 const Router = express.Router()
 // user
 Router.post("/auth/register", usersController.register)
 Router.post("/auth/login", usersController.login)
-// must add deleting and editing user
-// category
-Router.route("/category")
-  .post(
+Router.get("/auth/aboutMe", authMiddleware, usersController.about_me)
+Router.post("/auth/verifyEmail", usersController.verify_email),
+  // patients
+  Router.get(
+    "/patients",
     authMiddleware,
     roleMiddleware(Roles.Admin),
-    categoryController.add_category
+    patientsController.get_patients
   )
-  .get(authMiddleware, categoryController.get_categories)
+Router.post(
+  "/patients",
+  authMiddleware,
+  roleMiddleware(Roles.Admin),
+  patientsController.add_patient
+)
+Router.put(
+  "/patients/:id",
+  authMiddleware,
+  roleMiddleware(Roles.Admin, Roles.Doctor),
+  patientsController.edit_patient
+)
+Router.get(
+  "/patients/:id",
+  authMiddleware,
+  roleMiddleware(Roles.Admin, Roles.Doctor),
+  patientsController.get_single_patient
+)
+Router.delete(
+  "/patients/:id",
+  authMiddleware,
+  roleMiddleware(Roles.Admin, Roles.Doctor),
+  patientsController.delete_patient
+)
+// doctors
+Router.post(
+  "/doctors",
+  authMiddleware,
+  roleMiddleware(Roles.Admin, Roles.Doctor),
+  doctorsController.add_doctor
+)
+Router.get("/doctors", authMiddleware, doctorsController.get_doctors)
+Router.put(
+  "/doctors/:id",
+  authMiddleware,
+  roleMiddleware(Roles.Admin, Roles.Doctor),
+  doctorsController.edit_doctor
+)
 
-Router.route("/category/:id")
-  .put(
-    authMiddleware,
-    roleMiddleware(Roles.Admin),
-    categoryController.edit_category
-  )
-  .delete(
-    authMiddleware,
-    roleMiddleware(Roles.Admin),
-    categoryController.delete_category
-  )
-// threads
-Router.route("/threads")
-  .post(authMiddleware, threadsController.add_thread)
-  .get(authMiddleware, threadsController.get_threads)
-Router.route("/threads/:id")
-  .put(authMiddleware, threadsController.edit_thread)
-  .delete(authMiddleware, threadsController.delete_thread)
-  .get(authMiddleware, threadsController.get_single_thread)
-// posts
-Router.route("/posts")
-  .post(authMiddleware, postController.add_post)
-  .get(authMiddleware, postController.get_posts)
-Router.route("/posts/:id")
-  .delete(authMiddleware, postController.delete_post)
-  .put(authMiddleware, postController.edit_post)
 export default Router
-// comment
-Router.route("/comments")
-  .post(authMiddleware, commentController.add_coment)
-  .get(authMiddleware, commentController.get_user_comments)
-Router.route("/comments/:id")
-  .put(authMiddleware, commentController.edit_comment)
-  .delete(authMiddleware, commentController.delete_comment)
-  .get(authMiddleware, commentController.get_single_comment)
-// likes

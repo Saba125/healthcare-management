@@ -25,6 +25,12 @@ export default async function login(req: Request, res: Response) {
     })
     return
   }
+  if (!user.isVerified) {
+    return Utils.sendError(res, {
+      status: "error",
+      message: "Please verify first",
+    })
+  }
   const hashedPassword = Utils.getCryptoHash(password)
   if (hashedPassword !== user?.password) {
     Utils.sendError(res, {

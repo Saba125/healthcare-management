@@ -5,7 +5,19 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 enum Roles {
   Admin
-  User
+  Doctor
+  Patient
+}
+
+enum Gender {
+  Male
+  Female
+}
+
+enum Status {
+  Pending
+  Confirmed
+  Canceled
 }
 
 generator client {
@@ -18,11 +30,67 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  role      Roles    @default(User)
-  password  String
-  createdAt DateTime @default(now())
+  id                 Int       @id @default(autoincrement())
+  email              String    @unique
+  role               Roles     @default(Patient)
+  password           String
+  isVerified         Boolean   @default(false)
+  verificationCode   String?
+  codeExpirationDate DateTime?
+  createdAt          DateTime  @default(now())
 
   @@map("users")
+}
+
+model Patient {
+  id             Int            @id @default(autoincrement())
+  name           String
+  age            Int
+  gender         Gender
+  medicalHistory String
+  allergies      String[]
+  medications    String[]
+  contactInfo    Json
+  Appointment    Appointment[]
+  Prescription   Prescription[]
+
+  @@map("patients")
+}
+
+model Doctor {
+  id                Int            @id @default(autoincrement())
+  specialization    String
+  yearsOfExperience Int
+  availableSlots    DateTime[]
+  contactInfo       Json
+  Appointment       Appointment[]
+  Prescription      Prescription[]
+
+  @@map("doctors")
+}
+
+model Appointment {
+  id        Int      @id @default(autoincrement())
+  status    Status   @default(Pending)
+  patientId Int
+  doctorId  Int
+  doctor    Doctor   @relation(fields: [doctorId], references: [id])
+  patient   Patient  @relation(fields: [patientId], references: [id])
+  date      DateTime
+
+  @@map("appointments")
+}
+
+model Prescription {
+  id            Int      @id @default(autoincrement())
+  diagnosis     String
+  treatment     String
+  prescrpitions String[]
+  patientId     Int
+  patient       Patient  @relation(fields: [patientId], references: [id])
+  doctorId      Int
+  doctor        Doctor   @relation(fields: [doctorId], references: [id])
+  date          DateTime @default(now())
+
+  @@map("prescriptions")
 }
