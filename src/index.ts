@@ -12,6 +12,8 @@ import authMiddleware from "./middlewares/auth"
 
 const app = express()
 
+// server public resources
+app.use("/public", express.static(path.join(__dirname, "public")))
 dotenv.config()
 const corsOptions = {
   origin: true,
@@ -32,9 +34,7 @@ app.use(
 )
 
 // Routes
-app.get("/", authMiddleware, (req: Request, res: Response) => {
-  res.send("welcome")
-})
+
 app.use("/api/v1", router)
 const PORT = process.env.PORT || 3000
 // Run app

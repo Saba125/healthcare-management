@@ -1,0 +1,46 @@
+doctype html
+html
+  head
+    title #{subject}
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    style.
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        color: #333;
+        margin: 0;
+        padding: 0;
+      }
+      header {
+        background-color: #4CAF50;
+        color: white;
+        text-align: center;
+        padding: 20px 0;
+      }
+      h1 {
+        margin: 10px 0;
+        font-size: 24px;
+      }
+      main {
+        padding: 20px;
+        text-align: center;
+      }
+      footer {
+        background-color: #333;
+        color: white;
+        text-align: center;
+        padding: 10px;
+        position: fixed;
+        width: 100%;
+        bottom: 0;
+      }
+  body
+    header
+      h1 Hello #{to}, Your appointment has been successfully created.
+      h1 Please note that your appointment is in pending status and whenever the doctor will make the decision, we will email you.
+    main
+      p Your appointment has been successfully created.
+      p Thank you for choosing us! If you have any questions, feel free to contact our support team.
+    footer
+      p &copy; #{new Date().getFullYear()} Your Clinic Name. All rights reserved.

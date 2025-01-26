@@ -19,3 +19,25 @@ export const send_register_email = async (
   // Send the email
   return sendTestEmail({ to, subject, text, html: sendHtml })
 }
+export const send_appointment_creating = async (
+  to?: string,
+  subject?: string,
+  text?: string
+) => {
+  const compiledTemplate = pug.compileFile(
+    join(templatesPath, "appointment.pug")
+  )
+  const sendHtml = compiledTemplate({ to, subject })
+  return sendTestEmail({ to, subject, text, html: sendHtml })
+}
+export const send_appointment_cancel = async (
+  to?: string,
+  subject?: string,
+  text?: string
+) => {
+  const compiledTemplate = pug.compileFile(
+    join(templatesPath, "appointment-cancel.pug")
+  )
+  const sendHtml = compiledTemplate({ to, subject })
+  return sendTestEmail({ to, subject, text, html: sendHtml })
+}

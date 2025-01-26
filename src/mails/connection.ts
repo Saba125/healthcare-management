@@ -1,9 +1,9 @@
 import nodemailer from "nodemailer"
 export type SendEmailTypes = {
-  to: string
-  subject: string
-  text: string
-  html: string
+  to?: string
+  subject?: string
+  text?: string
+  html?: string
 }
 export const createEtherealTransport = async () => {
   const testAccount = await nodemailer.createTestAccount()

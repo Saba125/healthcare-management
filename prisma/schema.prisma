@@ -85,7 +85,7 @@ model Prescription {
   id            Int      @id @default(autoincrement())
   diagnosis     String
   treatment     String
-  prescrpitions String[]
+  prescriptions String[]
   patientId     Int
   patient       Patient  @relation(fields: [patientId], references: [id])
   doctorId      Int
