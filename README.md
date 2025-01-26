@@ -1,31 +1,155 @@
+Healthcare Management API
+
+Overview
+
+This is a comprehensive backend API designed for managing healthcare systems. It provides robust role-based authentication, appointment scheduling, email notifications, PDF generation for prescriptions, and other essential features required for a modern healthcare platform.
+
+Features
+
+Role-Based Authentication:
+
+Admin: Full access to manage all resources.
+
+Doctor: Manage assigned patients, view schedules, and create prescriptions.
+
+Patient: Book appointments, view prescriptions, and medical history.
+
+Email Integration:
+
+Email verification during user registration.
+
+Sending email templates for appointment confirmations and updates.
+
+PDF Generation:
+
+Generate and download prescriptions in PDF format.
+
+Appointment Management:
+
+Create, update, and delete appointments.
+
+Real-time updates via WebSocket (using Socket.IO).
+
+Public Resource Management:
+
+Static resources served through /public.
+
+Prerequisites
+
+Ensure the following are installed on your system:
+
+Node.js (v16 or higher)
+
+npm or yarn
+
+MongoDB
+
+Installation
+
+Clone the repository:
+
+git clone <repository-url>
+
+Navigate to the project directory:
+
+cd healthcare-management-api
+
+Install dependencies:
+
+npm install
+
+Set up environment variables:
+Create a .env file in the root directory and provide the following variables:
+
+PORT=3000
+MONGO_URI=<your-mongodb-uri>
+JWT_SECRET=<your-jwt-secret>
+COOKIE_SECRET=<your-cookie-secret>
+EMAIL_USER=<your-email-address>
+EMAIL_PASS=<your-email-password>
+
+Start the development server:
+
+npm run dev
+
 API Endpoints
+
 Authentication
-POST /auth/register: Register a new user.
-POST /auth/login: Login and receive a JWT token.
-POST /auth/logout: Logout and invalidate the token.
+
+POST /api/v1/auth/register - Register a new user.
+
+POST /api/v1/auth/login - User login.
+
+POST /api/v1/auth/verify-email - Verify email during registration.
+
+Doctors
+
+POST /api/v1/doctors - Create a new doctor (Admin only).
+
+GET /api/v1/doctors - List all doctors.
+
+GET /api/v1/doctors/:id - Get doctor details.
+
+PUT /api/v1/doctors/:id - Update doctor information.
+
+DELETE /api/v1/doctors/:id - Delete a doctor (Admin only).
+
+Patients
+
+POST /api/v1/patients - Create a new patient.
+
+GET /api/v1/patients - List all patients.
+
+GET /api/v1/patients/:id - Get patient details.
+
+PUT /api/v1/patients/:id - Update patient information.
+
+DELETE /api/v1/patients/:id - Delete a patient (Admin only).
+
+Appointments
+
+POST /api/v1/appointments - Book a new appointment.
+
+GET /api/v1/appointments - List all appointments.
+
+GET /api/v1/appointments/:id - Get appointment details.
+
+PUT /api/v1/appointments/:id - Update appointment details.
+
+DELETE /api/v1/appointments/:id - Cancel an appointment.
+
+Prescriptions
+
+POST /api/v1/prescriptions - Create a new prescription.
+
+GET /api/v1/prescriptions/:id - Download prescription as PDF.
 
 
-Course Endpoints
-GET /courses: Get a list of all courses.
-GET /courses/:courseId: Get details of a specific course.
-POST /courses: Create a new course.
-PUT /courses/:courseId: Update a course.
-DELETE /courses/:courseId: Delete a course.
+Client Events
+
+appointment-update: Triggered when an appointment is updated.
+
+Server Events
+
+appointment-updated: Broadcasted to all connected clients when an appointment is updated.
+
+Folder Structure
+
+healthcare-management-api
+├── src
+│   ├── controllers
+│   ├── middlewares
+│   ├── models
+│   ├── routes
+│   ├── utils
+│   └── app.ts
+├── public
+├── .env
+├── package.json
+└── README.md
 
 
-Lesson Endpoints
-GET /courses/:courseId/lessons: Get all lessons for a specific course.
-POST /courses/:courseId/lessons: Add a new lesson to a course.
-PUT /courses/:courseId/lessons/:lessonId: Update a lesson.
-DELETE /courses/:courseId/lessons/:lessonId: Delete a lesson.
 
-Quiz Endpoints
-GET /courses/:courseId/quizzes: Get quizzes for a specific course.
-POST /courses/:courseId/quizzes: Add a new quiz to a course.
-PUT /courses/:courseId/quizzes/:quizId: Update a quiz.
-DELETE /courses/:courseId/quizzes/:quizId: Delete a quiz.
+License
 
-Video Uploading Endpoints
-POST /courses/:courseId/videos: Upload a video for a course.
-Certificate Generation
-GET /courses/:courseId/certificate: Generate and download a PDF certificate for a student who completed the course.
+This project is licensed under the MIT License.
